@@ -17,18 +17,17 @@ cat games.csv | while IFS="," read YEAR ROUND WINNER OPPONENT WINNER_GOALS OPPON
 
     # If not found
     if [[ -z $WINNER_ID ]]; then
-      $PSQL "INSERT INTO teams(name) VALUES ('$WINNER')"
+      echo $($PSQL "INSERT INTO teams(name) VALUES ('$WINNER')")
     fi
 
     OPPONENT_ID=$($PSQL "SELECT team_id FROM teams WHERE name='$OPPONENT'");
     if [[ -z $OPPONENT_ID ]]; then
-      $PSQL "INSERT INTO teams(name) VALUES ('$OPPONENT')"
+      echo $($PSQL "INSERT INTO teams(name) VALUES ('$OPPONENT')")
     fi
     OPPONENT_ID=$($PSQL "SELECT team_id FROM teams WHERE name='$OPPONENT'");
     WINNER_ID=$($PSQL "SELECT team_id FROM teams WHERE name='$WINNER'");     
-    $($PSQL "INSERT INTO games(winner_id, opponent_id, winner_goals, opponent_goals, year, round) VALUES ($WINNER_ID, $OPPONENT_ID, $WINNER_GOALS, $OPPONENT_GOALS, $YEAR, '$ROUND')")
+    echo $($PSQL "INSERT INTO games(winner_id, opponent_id, winner_goals, opponent_goals, year, round) VALUES ($WINNER_ID, $OPPONENT_ID, $WINNER_GOALS, $OPPONENT_GOALS, $YEAR, '$ROUND')")
 
 
   fi
 done
-
